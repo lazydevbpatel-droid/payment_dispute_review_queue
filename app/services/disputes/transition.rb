@@ -30,7 +30,6 @@ module Disputes
           details: { from: from, to: to }
         )
 
-        # inside Disputes::Transition.call!
         if %w[won lost].include?(to)
           amount =
             to == "won" ? dispute.amount_cents : -dispute.amount_cents
