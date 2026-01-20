@@ -1,0 +1,51 @@
+<h1>Daily Dispute Volume</h1>
+
+<p>
+  <strong>Time zone:</strong> <%= current_user.time_zone %>
+</p>
+
+<%= form_with url: admin_reports_daily_dispute_volume_path, method: :get, local: true do %>
+  <div style="display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap;">
+    <div>
+      <label>From</label><br>
+      <%= date_field_tag :from, params[:from], required: true %>
+    </div>
+
+    <div>
+      <label>To</label><br>
+      <%= date_field_tag :to, params[:to], required: true %>
+    </div>
+
+    <div>
+      <%= submit_tag "Apply" %>
+      <%= link_to "Last 14 days", admin_reports_daily_dispute_volume_path(from: 14.days.ago.to_date, to: Date.current), style: "margin-left:8px;" %>
+    </div>
+
+    <div style="margin-left:auto;">
+      <%= link_to "Download JSON",
+        admin_reports_daily_dispute_volume_path(format: :json, from: params[:from], to: params[:to]) %>
+    </div>
+  </div>
+<% end %>
+
+<hr>
+
+<table width="100%" border="1" cellspacing="0" cellpadding="8" style="border-collapse:collapse;">
+  <thead>
+    <tr>
+      <th>Day</th>
+      <th>Disputes</th>
+      <th>Total Disputed Amount</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @rows.each do |r| %>
+      <tr>
+        <td><%= r[:day] %></td>
+        <td><%= r[:dispute_count] %></td>
+        <td><%= number_to_currency(r[:total_amount_cents] / 100.0) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,33 @@
+<nav class="navbar">
+  <div class="navbar-left">
+    <%= link_to "Payment Dispute Review", root_path, class: "navbar-brand" %>
+  </div>
+
+  <div class="navbar-right">
+    <%if user_signed_in?%>
+    <%= link_to "Disputes Queue",
+                  admin_disputes_path,
+                  class: "navbar-link" %>
+      <%= link_to "Daily Volume Report",
+                  admin_reports_daily_dispute_volume_path,
+                  class: "navbar-link" %>
+      <%= link_to "Time To Decision Report",
+                  admin_reports_time_to_decision_path,
+                  class: "navbar-link" %>
+      
+    <% end %>
+    <% if user_signed_in? %>
+      <span class="navbar-user">
+        <%= current_user.email %>
+      </span>
+      <%= link_to "Logout",
+            destroy_user_session_path,
+            data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+
+    <% else %>
+      <%= link_to "Login",
+                  new_user_session_path,
+                  class: "navbar-link" %>
+    <% end %>
+  </div>
+</nav>

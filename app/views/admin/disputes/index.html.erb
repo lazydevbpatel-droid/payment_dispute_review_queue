@@ -1,0 +1,62 @@
+<h1>Dispute Review Queue</h1>
+
+<%= form_with url: admin_disputes_path, method: :get, local: true do %>
+  <div style="display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap;">
+    <div>
+      <label>Status</label><br>
+      <%= select_tag :status,
+        options_for_select([["All", ""], ["open","open"], ["needs_evidence","needs_evidence"], ["awaiting_decision","awaiting_decision"], ["won","won"], ["lost","lost"]], params[:status]),
+        class: "input" %>
+    </div>
+
+    <div>
+      <label>Search (dispute or charge id)</label><br>
+      <%= text_field_tag :q, params[:q], placeholder: "dp_123 or ch_456", class: "input" %>
+    </div>
+
+    <div>
+      <%= submit_tag "Apply", class: "button" %>
+      <%= link_to "Reset", admin_disputes_path, class: "button", style: "margin-left:8px;" %>
+    </div>
+  </div>
+<% end %>
+
+<hr>
+
+<table width="100%" cellpadding="8" cellspacing="0" border="1" style="border-collapse:collapse;">
+  <thead>
+    <tr>
+      <th>Dispute</th>
+      <th>Charge</th>
+      <th>Status</th>
+      <th>Amount</th>
+      <th>Opened</th>
+      <th>Last Event</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @disputes.each do |d| %>
+      <tr>
+        <td><%= d.external_id %></td>
+        <td><%= d.charge&.external_id %></td>
+        <td><strong><%= d.status %></strong></td>
+        <td><%= number_to_currency(d.amount_cents.to_i / 100.0) %></td>
+        <td><%= time_ago_in_words(d.opened_at&.in_time_zone(current_user.time_zone)) %> ago</td>
+        <td><%= time_ago_in_words(d.opened_at&.in_time_zone(current_user.time_zone)) %> ago</td>
+        <td>
+          <%= link_to "View", admin_dispute_path(d) %>
+
+          <%# Optional: safe quick-advance only (avoid won/lost on index) %>
+          <% if policy(d).transition? && d.status == "needs_evidence" %>
+            <%= button_to "Advance",
+              transition_admin_dispute_path(d, to: "awaiting_decision"),
+              method: :post,
+              form: { style: "display:inline" } %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
