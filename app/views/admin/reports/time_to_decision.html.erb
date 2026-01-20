@@ -1,0 +1,34 @@
+<h1>Time To Decision</h1>
+
+<p>
+  <strong>Time zone:</strong> <%= current_user.time_zone %><br>
+  Measures time from <code>dispute.opened</code> to final <code>won/lost</code>, grouped by week.
+</p>
+
+<p>
+  <%= link_to "Download JSON", admin_reports_time_to_decision_path(format: :json) %>
+</p>
+
+<hr>
+
+<table width="100%" border="1" cellspacing="0" cellpadding="8" style="border-collapse:collapse;">
+  <thead>
+    <tr>
+      <th>Week Start</th>
+      <th>Sample Size</th>
+      <th>P50 (Median)</th>
+      <th>P90</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @rows.each do |r| %>
+      <tr>
+        <td><%= r[:week_start] %></td>
+        <td><%= r[:sample_size] %></td>
+        <td><%= human_duration(r[:p50_seconds]) %></td>
+        <td><%= human_duration(r[:p90_seconds]) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

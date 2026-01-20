@@ -1,0 +1,107 @@
+<h1>Dispute <%= @dispute.external_id %></h1>
+
+<p>
+  <strong>Charge:</strong> <%= @dispute.charge.external_id %><br>
+  <strong>Status:</strong> <%= @dispute.status %><br>
+  <strong>Amount:</strong> <%= number_to_currency(@dispute.amount_cents.to_i / 100.0) %><br>
+  <strong>Opened:</strong> <%= @dispute.opened_at&.in_time_zone(current_user.time_zone) %><br>
+  <strong>Closed:</strong> <%= @dispute.closed_at&.in_time_zone(current_user.time_zone) %>
+</p>
+
+<hr>
+
+<h2>Transitions</h2>
+
+<% if policy(@dispute).transition? %>
+  <%= form_with url: transition_admin_dispute_path(@dispute), method: :post, local: true do %>
+    <div style="display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap;">
+      <div>
+        <label>Move to</label><br>
+        <%= select_tag :to, options_for_select(%w[open needs_evidence awaiting_decision won lost], @dispute.status) %>
+      </div>
+
+      <div>
+        <label>Note (optional)</label><br>
+        <%= text_field_tag :note, "", placeholder: "Why are you changing status?", size: 50 %>
+      </div>
+
+      <div>
+        <%= submit_tag "Apply Transition" %>
+      </div>
+    </div>
+  <% end %>
+<% else %>
+  <p><em>Read-only access: transitions disabled.</em></p>
+<% end %>
+
+<% if policy(@dispute).reopen? && %w[won lost].include?(@dispute.status) %>
+  <hr>
+  <h3>Reopen</h3>
+  <%= form_with url: reopen_admin_dispute_path(@dispute), method: :post, local: true do %>
+    <label>Justification (required)</label><br>
+    <%= text_field_tag :note, "", size: 80, required: true %><br><br>
+    <%= submit_tag "Reopen Dispute" %>
+  <% end %>
+<% end %>
+
+<hr>
+
+<h2>Evidences</h2>
+    <ul>
+        <% @evidence.each do |ev| %>
+            <li>
+                <% if ev.metadata["description"].present? %>
+                    <strong>Description:</strong> <%= ev.metadata["description"] %></br>
+                <% end %>
+
+                <% if ev.file.attached? %>
+                    <div>
+                    <strong>File:</strong>
+                    <%= link_to ev.file.filename.to_s, rails_blob_path(ev.file, disposition: "attachment") %>
+                    </div>
+                <% end %>
+
+                <strong>Created At:</strong><small><%= ev.created_at.in_time_zone(current_user.time_zone) %></small>
+            </li>
+        <% end %>
+    </ul>
+
+    <br /><br />    
+    <%= form_with url: admin_dispute_evidences_path(@dispute), method: :post, local: true, multipart: true do %>
+        <div>
+            <label>Text Description</label><br>
+            <%= text_area_tag :text, "", rows: 3 %>
+        </div>
+
+        <div>
+            <label>Upload file (optional)</label><br>
+            <%= file_field_tag :file %>
+        </div>
+
+        <div style="margin-top:10px;">
+            <%= submit_tag "Attach Evidence" %>
+        </div>
+    <% end %>
+
+<hr>
+
+<h2>Case Actions (Audit)</h2>
+<ul>
+  <% @case_actions.each do |a| %>
+    <li>
+      <strong><%= a.action %></strong>
+      by <%= a.actor %>
+      at <%= a.created_at.in_time_zone(current_user.time_zone) %>
+      <% if a.note.present? %>
+        — <em><%= a.note %></em>
+      <% end %>
+      <br>
+      <small><%= a.details %></small>
+    </li>
+  <% end %>
+</ul>
+
+<hr>
+
+<h2>Debug</h2>
+<pre style="white-space:pre-wrap;"><%= JSON.pretty_generate(@dispute.external_payload) rescue @dispute.external_payload.to_s %></pre>
