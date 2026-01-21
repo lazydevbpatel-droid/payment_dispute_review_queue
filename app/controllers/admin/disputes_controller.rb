@@ -16,14 +16,6 @@ class Admin::DisputesController < ApplicationController
         .in_order_of(:status, %w[open needs_evidence awaiting_decision won lost])
         .order(Arel.sql("disputes.opened_at ASC NULLS LAST, disputes.created_at ASC"))
 
-
-
-
-
-
-
-        # disputes = policy_scope(Dispute).includes(:charge).order(queue_order_sql)
-
         disputes = disputes.where(status: @status) if @status.present?
         if @q.present?
             disputes = disputes.joins(:charge).where(
@@ -41,14 +33,13 @@ class Admin::DisputesController < ApplicationController
         @evidence = @dispute.evidence.order(created_at: :desc).limit(50)
     end
 
-    # POST /admin/disputes/:id/transition
     def transition
         authorize @dispute, :transition?
 
         to = params.require(:to).to_s
         note = params[:note].to_s
 
-        Disputes::Transition.call!(
+        Disputes::Transition.call!( 
         dispute: @dispute,
         actor: current_user,
         to: to,
@@ -60,7 +51,6 @@ class Admin::DisputesController < ApplicationController
         redirect_to admin_dispute_path(@dispute), alert: e.message
     end
 
-    # POST /admin/disputes/:id/reopen
     def reopen
         authorize @dispute, :reopen?
 
@@ -80,7 +70,6 @@ class Admin::DisputesController < ApplicationController
         @dispute = Dispute.find(params[:id])
     end
 
-    # Queue-first ordering: open → needs_evidence → awaiting_decision → won/lost
     def queue_order_sql
         <<~SQL.squish
         CASE disputes.status
