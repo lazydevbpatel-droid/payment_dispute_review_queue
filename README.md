@@ -67,3 +67,13 @@ Visit:
 http://localhost:3000
 
 Login using seeded admin credentials to manage users.
+<img width="1459" height="780" alt="login_page" src="https://github.com/user-attachments/assets/b7ae4f20-5f28-4f8c-bc56-c6579208ec28" />
+<img width="1457" height="596" alt="Screenshot 2026-01-28 at 7 34 35 AM" src="https://github.com/user-attachments/assets/3f7426c3-553d-4a51-b287-d179af2e6d5c" />
+<img width="1460" height="513" alt="Screenshot 2026-01-28 at 7 35 14 AM" src="https://github.com/user-attachments/assets/01e5f4be-fd1d-4b80-8acb-6132325d5737" />
+<img width="1462" height="357" alt="Screenshot 2026-01-28 at 7 36 51 AM" src="https://github.com/user-attachments/assets/33612f9c-71ad-4e4a-9541-d1939ba5161c" />
+<img width="1464" height="434" alt="Screenshot 2026-01-28 at 7 37 03 AM" src="https://github.com/user-attachments/assets/6c089d97-4e5a-49f3-91fd-50e12e554846" />
+<img width="1462" height="834" alt="Screenshot 2026-01-28 at 7 37 23 AM" src="https://github.com/user-attachments/assets/dfc5e486-e685-42a5-9331-bd0be6371c33" />
+<img width="1462" height="720" alt="Screenshot 2026-01-28 at 7 37 35 AM" src="https://github.com/user-attachments/assets/c5302764-90e7-4fdf-91cc-9e9568342d64" />
+
+
+
