@@ -15,7 +15,7 @@ namespace :webhook do
     end
     puts "timestamp: #{ts}"
     puts "dispute_id: #{dispute_id}"
-    puts OpenSSL::HMAC.hexdigest("SHA256", secret, "#{ts}.#{payload}")
+    puts "Hmac: #{OpenSSL::HMAC.hexdigest("SHA256", secret, "#{ts}.#{payload}")}"
     puts "payload: #{payload}"
   end
 end
