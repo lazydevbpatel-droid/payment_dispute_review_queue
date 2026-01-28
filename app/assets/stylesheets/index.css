@@ -1,0 +1,30 @@
+/* <style> */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background: #f4f4f4;
+}
+
+th,
+td {
+  text-align: left;
+}
+
+.btn {
+  padding: 4px 8px;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: #007bff;
+  color: white;
+}
+
+.btn-danger {
+  background: #dc3545;
+  color: white;
+}
+/* </style> */

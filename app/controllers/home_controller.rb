@@ -1,5 +1,6 @@
 class HomeController < ApplicationController
-    skip_after_action :verify_policy_scoped, only: :index
-    def index
-    end
+  def index
+    authorize :home, :index?
+    @users = policy_scope(User)
+  end
 end

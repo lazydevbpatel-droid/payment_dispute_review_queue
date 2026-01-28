@@ -11,7 +11,6 @@ class Admin::EvidencesController < ApplicationController
         }.compact
         )
 
-        # Attach file if present
         if params[:file].present?
             evidence.file.attach(params[:file])
         end

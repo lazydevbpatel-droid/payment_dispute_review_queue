@@ -1,0 +1,27 @@
+<div class="edit-user-container">
+  <div class="edit-user-card">
+    <h1>Edit User</h1>
+
+    <%= form_with model: [:admin, @user], url: admin_user_path, local: true do |f| %>
+      <div class="form-group">
+        <%= f.label :email %>
+        <%= f.email_field :email %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :role %>
+        <%= f.select :role, User.roles.keys.map { |r| [r.titleize, r] },{}, { class: "form-control" } %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :time_zone %>
+        <%= f.text_field :time_zone %>
+      </div>
+
+      <div class="form-actions">
+        <%= link_to "Cancel", root_path, class: "btn-primary" %>
+        <%= f.submit "Update User", class: "btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+</div>
