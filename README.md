@@ -65,6 +65,14 @@ bin/rails db:create db:migrate db:seed
 Visit:
 
 http://localhost:3000
+7. Run rake task to generate HMAC token, dispute ID, and Timestamp
+   Use these to get a fake webhook request that will insert disputes in database
+   rails webhook:sign
+   
+<img width="1467" height="133" alt="Screenshot 2026-01-28 at 9 21 18 AM" src="https://github.com/user-attachments/assets/69dd6761-6376-4de5-a05c-99c492a5c603" />
+<img width="692" height="415" alt="Screenshot 2026-01-28 at 9 24 53 AM" src="https://github.com/user-attachments/assets/eb888bae-94e6-4860-9f8c-ffc840bfabcc" />
+
+<img width="651" height="440" alt="Screenshot 2026-01-28 at 9 25 02 AM" src="https://github.com/user-attachments/assets/eaf8025e-7d98-487d-9da7-9f4cbf7c1371" />
 
 Login using seeded admin credentials to manage users.
 <img width="1459" height="780" alt="login_page" src="https://github.com/user-attachments/assets/b7ae4f20-5f28-4f8c-bc56-c6579208ec28" />
